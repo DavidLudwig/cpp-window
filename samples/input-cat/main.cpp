@@ -4,7 +4,7 @@
 #include <ui>
 
 void on_event(ui::event e) {
-    if (e.type() == ui::event_type::no_event) {
+    if (e.type() == ui::event_type::unknown) {
         return;
     }
     std::cout << e.name();
@@ -13,7 +13,7 @@ void on_event(ui::event e) {
         case ui::event_type::key_up:
             std::cout << ": " << e.get<ui::key_event>().key_name();
             break;
-        case ui::event_type::no_event:
+        case ui::event_type::unknown:
             break;
         case ui::event_type::quit:
             exit(0);

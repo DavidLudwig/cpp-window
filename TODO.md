@@ -1,0 +1,1 @@
+* provide access to event's underlying, native type

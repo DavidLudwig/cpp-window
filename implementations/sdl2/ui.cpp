@@ -70,7 +70,7 @@ namespace ui {
             case SDL_QUIT:
                 return event_type::quit;
             default:
-                return event_type::no_event;
+                return event_type::unknown;
         }
     }
 
@@ -93,8 +93,8 @@ namespace ui {
                 return "key_down";
             case ui::event_type::key_up:
                 return "key_up";
-            case ui::event_type::no_event:
-                return "no_event";
+            case ui::event_type::unknown:
+                return "unknown";
             case ui::event_type::quit:
                 return "quit";
         }

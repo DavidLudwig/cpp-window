@@ -34,13 +34,10 @@ namespace ui {
     };
 
     enum class event_type {
-        no_event = 0,
+        unknown = 0,
         key_down,
         key_up,
         quit
-    };
-
-    struct no_event {
     };
 
     struct event {
