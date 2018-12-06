@@ -67,9 +67,15 @@ namespace ui {
         inline key_event(const SDL_Event &src) : event(src) {}
     };
 
+    enum class pointer_type {
+        unknown = 0,
+        mouse
+    };
+
     struct pointer_event : public event {
       public:
         std::tuple<float,float> position() const;
+        pointer_type pointer_type() const;
 
       private:
         friend struct window;

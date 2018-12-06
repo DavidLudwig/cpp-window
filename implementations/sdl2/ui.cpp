@@ -149,6 +149,17 @@ namespace ui {
         return std::make_tuple(0.f,0.f);
     }
 
+    ui::pointer_type pointer_event::pointer_type() const {
+        switch (this->_sdl_event.type) {
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+            case SDL_MOUSEMOTION:
+                return ui::pointer_type::mouse;
+            default:
+                break;
+        }
+        return ui::pointer_type::unknown;
+    }
 
     void run(window & w) {
         while (true) {
