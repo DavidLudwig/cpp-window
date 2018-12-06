@@ -11,6 +11,7 @@
     * restoration (from minification)
     * closure
   * painting/display?
+  * IME text-input
 * window-state
   * reading
   * modifying/requesting
