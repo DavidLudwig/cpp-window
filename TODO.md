@@ -1,1 +1,3 @@
-* provide access to event's underlying, native type
+* provide access to the native object(s) for
+  * window
+  * event
