@@ -1,6 +1,6 @@
 
 #include <stdexcept>
-#include "ui"
+#include "ui.hpp"
 
 namespace ui {
     window::window(const char * title, int width, int height) {
