@@ -59,27 +59,6 @@ namespace ui {
     event::event(const SDL_Event &src) : _sdl_event(src) {
     }
 
-    std::string key_event::key_name() const {
-        return SDL_GetKeyName(this->_sdl_event.key.keysym.sym);
-    }
-
-    std::tuple<float,float> pointer_event::position() const {
-        switch (this->_sdl_event.type) {
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-                return std::make_tuple(
-                    (float) this->_sdl_event.button.x,
-                    (float) this->_sdl_event.button.y
-                );
-            case SDL_MOUSEMOTION:
-                return std::make_tuple(
-                    (float) this->_sdl_event.motion.x,
-                    (float) this->_sdl_event.motion.y
-                );
-        }
-        return std::make_tuple(0.f,0.f);
-    }
-
     event::operator bool() const {
         return (_sdl_event.type != 0);
     }
@@ -103,31 +82,6 @@ namespace ui {
         }
     }
 
-    template <>
-    const key_event & event::get() const {
-        switch (type()) {
-            case event_type::key_down:
-            case event_type::key_up:
-                break;
-            default:
-                throw std::logic_error("the requested type is not set for this event");
-        }
-        return static_cast<const key_event &>(*this);
-    }
-
-    template <>
-    const pointer_event & event::get() const {
-        switch (type()) {
-            case event_type::pointer_down:
-            case event_type::pointer_move:
-            case event_type::pointer_up:
-                break;
-            default:
-                throw std::logic_error("the requested type is not set for this event");
-        }
-        return static_cast<const pointer_event &>(*this);
-    }
-
     std::string event::name() const {
         const auto t = type();
         switch (t) {
@@ -148,6 +102,53 @@ namespace ui {
         }
         return std::string();
     }
+
+    template <>
+    const key_event & event::get() const {
+        switch (type()) {
+            case event_type::key_down:
+            case event_type::key_up:
+                break;
+            default:
+                throw std::logic_error("the requested type is not set for this event");
+        }
+        return static_cast<const key_event &>(*this);
+    }
+
+    std::string key_event::key_name() const {
+        return SDL_GetKeyName(this->_sdl_event.key.keysym.sym);
+    }
+
+    template <>
+    const pointer_event & event::get() const {
+        switch (type()) {
+            case event_type::pointer_down:
+            case event_type::pointer_move:
+            case event_type::pointer_up:
+                break;
+            default:
+                throw std::logic_error("the requested type is not set for this event");
+        }
+        return static_cast<const pointer_event &>(*this);
+    }
+
+    std::tuple<float,float> pointer_event::position() const {
+        switch (this->_sdl_event.type) {
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                return std::make_tuple(
+                    (float) this->_sdl_event.button.x,
+                    (float) this->_sdl_event.button.y
+                );
+            case SDL_MOUSEMOTION:
+                return std::make_tuple(
+                    (float) this->_sdl_event.motion.x,
+                    (float) this->_sdl_event.motion.y
+                );
+        }
+        return std::make_tuple(0.f,0.f);
+    }
+
 
     void run(window & w) {
         while (true) {
