@@ -42,6 +42,12 @@ namespace ui {
                     w->_event_callback(key_event(*sdl_event));
                 } break;
 
+                case SDL_MOUSEBUTTONDOWN:
+                case SDL_MOUSEMOTION:
+                case SDL_MOUSEBUTTONUP: {
+                    w->_event_callback(pointer_event(*sdl_event));
+                } break;
+
                 default: {
                     w->_event_callback(event(*sdl_event));
                 } break;
@@ -57,6 +63,23 @@ namespace ui {
         return SDL_GetKeyName(this->_sdl_event.key.keysym.sym);
     }
 
+    std::tuple<float,float> pointer_event::position() const {
+        switch (this->_sdl_event.type) {
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                return std::make_tuple(
+                    (float) this->_sdl_event.button.x,
+                    (float) this->_sdl_event.button.y
+                );
+            case SDL_MOUSEMOTION:
+                return std::make_tuple(
+                    (float) this->_sdl_event.motion.x,
+                    (float) this->_sdl_event.motion.y
+                );
+        }
+        return std::make_tuple(0.f,0.f);
+    }
+
     event::operator bool() const {
         return (_sdl_event.type != 0);
     }
@@ -67,6 +90,12 @@ namespace ui {
                 return event_type::key_down;
             case SDL_KEYUP:
                 return event_type::key_up;
+            case SDL_MOUSEBUTTONDOWN:
+                return event_type::pointer_down;
+            case SDL_MOUSEMOTION:
+                return event_type::pointer_move;
+            case SDL_MOUSEBUTTONUP:
+                return event_type::pointer_up;
             case SDL_QUIT:
                 return event_type::quit;
             default:
@@ -86,6 +115,19 @@ namespace ui {
         return static_cast<const key_event &>(*this);
     }
 
+    template <>
+    const pointer_event & event::get() const {
+        switch (type()) {
+            case event_type::pointer_down:
+            case event_type::pointer_move:
+            case event_type::pointer_up:
+                break;
+            default:
+                throw std::logic_error("the requested type is not set for this event");
+        }
+        return static_cast<const pointer_event &>(*this);
+    }
+
     std::string event::name() const {
         const auto t = type();
         switch (t) {
@@ -93,6 +135,12 @@ namespace ui {
                 return "key_down";
             case ui::event_type::key_up:
                 return "key_up";
+            case ui::event_type::pointer_down:
+                return "pointer_down";
+            case ui::event_type::pointer_move:
+                return "pointer_move";
+            case ui::event_type::pointer_up:
+                return "pointer_up";
             case ui::event_type::unknown:
                 return "unknown";
             case ui::event_type::quit:

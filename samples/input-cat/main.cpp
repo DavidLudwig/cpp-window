@@ -13,6 +13,13 @@ void on_event(ui::event e) {
         case ui::event_type::key_up:
             std::cout << ": " << e.get<ui::key_event>().key_name();
             break;
+        case ui::event_type::pointer_down:
+        case ui::event_type::pointer_move: {
+            const auto [x, y] = e.get<ui::pointer_event>().position();
+            std::cout << ": position={" << x << "," << y << "}";
+            // std::cout << ": position={" << e.get<ui::pointer_event>().position().get<0>()
+        } break;
+        case ui::event_type::pointer_up:
         case ui::event_type::unknown:
             break;
         case ui::event_type::quit:

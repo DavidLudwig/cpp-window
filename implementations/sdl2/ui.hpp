@@ -12,6 +12,7 @@
 
 #include <functional>
 #include <string>
+#include <tuple>
 
 namespace ui {
     // enum class window_unit {
@@ -20,6 +21,7 @@ namespace ui {
 
     struct event;
     struct key_event;
+    struct pointer_event;
 
     struct window {
       public:
@@ -37,6 +39,9 @@ namespace ui {
         unknown = 0,
         key_down,
         key_up,
+        pointer_down,
+        pointer_move,
+        pointer_up,
         quit
     };
 
@@ -60,6 +65,15 @@ namespace ui {
       private:
         friend struct window;
         inline key_event(const SDL_Event &src) : event(src) {}
+    };
+
+    struct pointer_event : public event {
+      public:
+        std::tuple<float,float> position() const;
+
+      private:
+        friend struct window;
+        inline pointer_event(const SDL_Event &src) : event(src) {}
     };
 
     void run(window & w);
