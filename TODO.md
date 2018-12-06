@@ -40,3 +40,5 @@
     * 'struct window_system'?
     * 'concept window_system'?
   * Possiblly-singleton, 'struct application'?
+  * ability to enable or disable system, or user-expected keyboard shortcuts?
+    * EXAMPLE: Cmd/Ctrl+Q for quit?
