@@ -3,6 +3,8 @@
   * event
 * add event types for
   * mouse, touch, and pen, perhaps via a "pointer"-styled event (ala. HTML or Win32 "pointer" events)
+    * https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
+    * https://docs.microsoft.com/en-us/windows/desktop/api/_inputmsg/
   * window-size changes
 * whither?:
   * API(s) to get the current state of input-device(s)
