@@ -36,20 +36,25 @@ namespace ui {
     int window::_on_sdl_event(void * the_window, SDL_Event * sdl_event) {
         window * w = static_cast<window *>(the_window);
         if (w->_event_callback) {
-            event e;
-            e._sdl_event = *sdl_event;
-            w->_event_callback(std::move(e));
+            switch (sdl_event->type) {
+                case SDL_KEYDOWN:
+                case SDL_KEYUP: {
+                    w->_event_callback(key_event(*sdl_event));
+                } break;
+
+                default: {
+                    w->_event_callback(event(*sdl_event));
+                } break;
+            }
         }
         return 0;
     }
 
-    key_event::key_event(const event & e) :
-        _inner_event(e)
-    {
+    event::event(const SDL_Event &src) : _sdl_event(src) {
     }
 
     std::string key_event::key_name() const {
-        return SDL_GetKeyName(_inner_event._sdl_event.key.keysym.sym);
+        return SDL_GetKeyName(this->_sdl_event.key.keysym.sym);
     }
 
     event::operator bool() const {
@@ -70,7 +75,7 @@ namespace ui {
     }
 
     template <>
-    key_event event::get() const {
+    const key_event & event::get() const {
         switch (type()) {
             case event_type::key_down:
             case event_type::key_up:
@@ -78,7 +83,7 @@ namespace ui {
             default:
                 throw std::logic_error("the requested type is not set for this event");
         }
-        return key_event(*this);
+        return static_cast<const key_event &>(*this);
     }
 
     std::string event::name() const {

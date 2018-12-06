@@ -19,6 +19,7 @@ namespace ui {
     // };
 
     struct event;
+    struct key_event;
 
     struct window {
       public:
@@ -42,26 +43,26 @@ namespace ui {
     struct no_event {
     };
 
-    struct key_event {
-      public:
-        std::string key_name() const;
-      private:
-        friend struct event;
-        const event & _inner_event;     // FIXME, dludwig@pobox.com: ick on the use of '&', here.  Remove it? 
-        key_event(const event &);
-    };
-
     struct event {
       public:
         event() = default;
         operator bool() const;
         event_type type() const;
-        template <typename EventSubType> EventSubType get() const;
+        template <typename EventSubType> const EventSubType & get() const;
         std::string name() const;
-      private:
+      protected:
+        event(const SDL_Event & src);
         SDL_Event _sdl_event = {0};
-        friend struct key_event;
         friend struct window;
+    };
+
+    struct key_event : public event {
+      public:
+        std::string key_name() const;
+
+      private:
+        friend struct window;
+        inline key_event(const SDL_Event &src) : event(src) {}
     };
 
     void run(window & w);
