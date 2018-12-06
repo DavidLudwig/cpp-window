@@ -82,8 +82,7 @@ namespace ui {
         }
     }
 
-    std::string event::name() const {
-        const auto t = type();
+    std::string to_string(event_type t) {
         switch (t) {
             case ui::event_type::key_down:
                 return "key_down";
@@ -99,6 +98,16 @@ namespace ui {
                 return "unknown";
             case ui::event_type::quit:
                 return "quit";
+        }
+        return std::string();
+    }
+
+    std::string to_string(pointer_type t) {
+        switch (t) {
+            case ui::pointer_type::unknown:
+                return "unknown";
+            case ui::pointer_type::mouse:
+                return "mouse";
         }
         return std::string();
     }

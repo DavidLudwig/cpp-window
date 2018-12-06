@@ -44,6 +44,7 @@ namespace ui {
         pointer_up,
         quit
     };
+    std::string to_string(event_type t);
 
     struct event {
       public:
@@ -51,7 +52,6 @@ namespace ui {
         operator bool() const;
         event_type type() const;
         template <typename EventSubType> const EventSubType & get() const;
-        std::string name() const;
       protected:
         event(const SDL_Event & src);
         SDL_Event _sdl_event = {0};
@@ -71,6 +71,7 @@ namespace ui {
         unknown = 0,
         mouse
     };
+    std::string to_string(pointer_type t);
 
     struct pointer_event : public event {
       public:
