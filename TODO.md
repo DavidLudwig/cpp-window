@@ -10,12 +10,32 @@
     * minification
     * restoration (from minification)
     * closure
-* window-state retrieval
-* window-state storage
+  * painting/display?
+* window-state
+  * reading
+  * modifying/requesting
+  * make sure fullscreen-edness is supported!
+  * what's async vs. what's not?
+    * some platforms have make certain state changes be asynchonous
+      * EXAMPLE: MacOS and fullscreen changes can be async
+    * whither use std::future in async state-changes?
+      * compatiblity with Coroutine TS?
+    * might some, or all, state-getters be async?
+* different numerical types may be used for measurement
+  * EXAMPLE: integers on Win32
+  * EXAMPLE: floating-point numbers on iOS and MacOS
 * graphic-subsystem co-initialization
+  * EXAMPLE: SDL offers window-creation flags, "SDL_WINDOW_VULKAN" and "SDL_WINDOW_OPENGL", which may be necessary? 
+* systems with more than one 'system level' window system
+  * EXAMPLE: *nix with Wayland, X11, perhaps more
+  * EXAMPLE: Windows with Win32 (aka. HWND) or WinRT (aka. ICoreWindow, etc.)
 * whither?:
-  * API(s) to get the current state of input-device(s)
+  * APIs to get the current state of input-device(s)
     * EXAMPLES: get_keyboard_state()
     * are there ways to reduce, or eliminate, runtime-size additions, with such (especially on low-end platform(s)!) ?
     * would device-enumeration thus be necessary?
     * would device-identification thus be necessary?
+  * APIs for users (or UI-toolkit-vendors!) to plug-in support for new/different/non-OS windowing systems?
+    * 'struct window_system'?
+    * 'concept window_system'?
+  * Possiblly-singleton, 'struct application'?
