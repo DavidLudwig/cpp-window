@@ -1,0 +1,12 @@
+# Search for and add sample(s):
+file(GLOB all_paths ${CMAKE_CURRENT_LIST_DIR}/*)
+foreach(one_path ${all_paths})
+    if(IS_DIRECTORY ${one_path})
+        if(EXISTS ${one_path}/CMakeLists.txt)
+            get_filename_component(one_sample ${one_path} NAME)
+            if (NOT "${one_sample}" STREQUAL "template-sample")
+                add_subdirectory(${one_sample})
+            endif()
+        endif()
+    endif()
+endforeach()
