@@ -24,11 +24,14 @@ namespace ui {
     }
 
     void window::set_event_handler(std::function<void (event)> user_callback) {
-        if (_event_callback && !user_callback) {
-            SDL_DelEventWatch(window::_on_sdl_event, static_cast<void *>(this));
-        }
         if (user_callback) {
-            SDL_AddEventWatch(window::_on_sdl_event, static_cast<void *>(this));
+            if (!this->_event_callback) {
+                SDL_AddEventWatch(window::_on_sdl_event, static_cast<void *>(this));
+            }
+        } else {
+            if (this->_event_callback) {
+                SDL_DelEventWatch(window::_on_sdl_event, static_cast<void *>(this));
+            }
         }
         this->_event_callback = user_callback;
     }
