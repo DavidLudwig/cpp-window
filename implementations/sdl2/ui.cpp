@@ -62,10 +62,6 @@ namespace ui {
     event::event(const SDL_Event &src) : _sdl_event(src) {
     }
 
-    event::operator bool() const {
-        return (_sdl_event.type != 0);
-    }
-
     event_type event::type() const {
         switch (_sdl_event.type) {
             case SDL_KEYDOWN:

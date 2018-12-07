@@ -49,7 +49,6 @@ namespace ui {
     struct event {
       public:
         event() = default;
-        operator bool() const;
         event_type type() const;
         template <typename EventSubType> const EventSubType & get() const;
       protected:
