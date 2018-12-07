@@ -80,19 +80,19 @@ namespace ui {
 
     std::string to_string(event_type t) {
         switch (t) {
-            case ui::event_type::key_down:
+            case event_type::key_down:
                 return "key_down";
-            case ui::event_type::key_up:
+            case event_type::key_up:
                 return "key_up";
-            case ui::event_type::pointer_down:
+            case event_type::pointer_down:
                 return "pointer_down";
-            case ui::event_type::pointer_move:
+            case event_type::pointer_move:
                 return "pointer_move";
-            case ui::event_type::pointer_up:
+            case event_type::pointer_up:
                 return "pointer_up";
-            case ui::event_type::unknown:
+            case event_type::unknown:
                 return "unknown";
-            case ui::event_type::quit:
+            case event_type::quit:
                 return "quit";
         }
         return std::string();
@@ -100,9 +100,9 @@ namespace ui {
 
     std::string to_string(pointer_type t) {
         switch (t) {
-            case ui::pointer_type::unknown:
+            case pointer_type::unknown:
                 return "unknown";
-            case ui::pointer_type::mouse:
+            case pointer_type::mouse:
                 return "mouse";
         }
         return std::string();
@@ -154,16 +154,16 @@ namespace ui {
         return std::make_tuple(0.f,0.f);
     }
 
-    ui::pointer_type pointer_event::pointer_type() const {
+    pointer_type pointer_event::pointer_type() const {
         switch (this->_sdl_event.type) {
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
             case SDL_MOUSEMOTION:
-                return ui::pointer_type::mouse;
+                return pointer_type::mouse;
             default:
                 break;
         }
-        return ui::pointer_type::unknown;
+        return pointer_type::unknown;
     }
 
     void run(window & w) {
