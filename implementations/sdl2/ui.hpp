@@ -52,7 +52,7 @@ namespace ui {
         event_type type() const;
         template <typename EventSubType> const EventSubType & get() const;
       protected:
-        event(const SDL_Event & src);
+        inline event(const SDL_Event &src) : _sdl_event(src) {}
         SDL_Event _sdl_event = {0};
         friend struct window;
     };
