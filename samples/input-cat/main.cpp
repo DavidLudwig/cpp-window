@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ui.hpp>
 
-void on_event(ui::event e) {
+void on_event(ui::event e, ui::window * w) {
     if (e.type() == ui::event_type::unknown) {
         return;
     }
@@ -20,6 +20,8 @@ void on_event(ui::event e) {
             const auto [x, y] = pe.position();
             std::cout << ": position={" << x << "," << y << "}, pointer_type=" << ui::to_string(pe.pointer_type());
         } break;
+        case ui::event_type::ui_paint:
+            break;
         case ui::event_type::unknown:
             break;
         case ui::event_type::quit:

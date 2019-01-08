@@ -22,16 +22,20 @@ namespace ui {
     struct event;
     struct key_event;
     struct pointer_event;
+    struct ui_paint_event;
 
     struct window {
       public:
         window(const char * title, int width, int height);
         ~window();
-        void set_event_handler(std::function<void (event)>);
+        void set_event_handler(std::function<void (event, window *)>);
         void pump_events();
+        void _emit_ui_paint();
+        template <typename Handle> Handle get_native_handle() { return nullptr; }
+
       private:
         SDL_Window *_sdl_window = nullptr;
-        std::function<void(event)> _event_callback;
+        std::function<void(event, window *)> _event_callback;
         static int _on_sdl_event(void *, SDL_Event *);   // is of the function signature, SDL_EventFilter
     };
 
@@ -42,6 +46,7 @@ namespace ui {
         pointer_down,
         pointer_move,
         pointer_up,
+        ui_paint,
         quit
     };
     std::string to_string(event_type t);
@@ -82,7 +87,28 @@ namespace ui {
         inline pointer_event(const SDL_Event &src) : event(src) {}
     };
 
-    void run(window & w);
+    struct ui_paint_event : public event {
+      public:
+        ui_paint_event();
+    };
+
+    void run(window &w);
+}
+
+namespace ui::content {
+    struct pixel_grid_rgbx8888 {
+      public:
+        void attach(ui::window & w);
+        uint8_t * data();
+        std::tuple<int,int> dimensions();
+        int pitch();
+        size_t size();
+        void update();
+      
+      private:
+        ui::window * _window = nullptr;
+        SDL_Surface * _get_sdl_surface();
+    };
 }
 
 #endif // __UI_WINDOW
