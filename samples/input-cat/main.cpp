@@ -4,8 +4,12 @@
 #include <ui.hpp>
 
 void on_event(ui::event e, ui::window * w) {
-    if (e.type() == ui::event_type::unknown) {
+    switch (e.type()) {
+        case ui::event_type::unknown:
+        case ui::event_type::ui_paint:
             return;
+        default:
+            break;
     }
     std::cout << ui::to_string(e.type());
     switch (e.type()) {
