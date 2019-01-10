@@ -36,9 +36,7 @@ int main() {
     // Add content
     content.attach(w);
 
-    // Run indefinitely.  This function might not return until the app
-    // has finished running, or it might return right-away (Emscripten
-    // should, perhaps, do this.)
+    // Run indefinitely
     ui::run(w);
 
     return 0;

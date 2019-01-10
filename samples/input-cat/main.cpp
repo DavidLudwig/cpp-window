@@ -5,7 +5,7 @@
 
 void on_event(ui::event e, ui::window * w) {
     if (e.type() == ui::event_type::unknown) {
-        return;
+            return;
     }
     std::cout << ui::to_string(e.type());
     switch (e.type()) {
@@ -38,9 +38,7 @@ int main() {
     // Setup an event handler
     w.set_event_handler(on_event);
 
-    // Run indefinitely.  This function might not return until the app
-    // has finished running, or it might return right-away (Emscripten
-    // should, perhaps, do this.)
+    // Run indefinitely
     ui::run(w);
 
     return 0;

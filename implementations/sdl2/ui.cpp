@@ -2,6 +2,9 @@
 #include <limits>
 #include <mutex>
 #include <stdexcept>
+#if __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
 #include "ui.hpp"
 
 namespace ui {
@@ -222,11 +225,26 @@ namespace ui {
         this->_sdl_event.type = _get_sdl_event_type_from_ui(ui::event_type::ui_paint);
     }
 
+    static void run_once(void * _window) {
+        window * w = (window *) _window;
+        w->pump_events();
+        w->_emit_ui_paint();
+    }
+
     void run(window & w) {
-        while (true) {
-            w.pump_events();
-            w._emit_ui_paint();
-        }
+        #if __EMSCRIPTEN__
+            emscripten_set_main_loop_arg(
+                &run_once,
+                (void *)&w,
+                0,      // 'fps': '0' here to use browser's requestAnimationFrame for invoking callback
+                true    // 'simulate_infinite_loop': 'true' to stop execution after registering callback,
+                        //   without unwinding C++ stack
+            );
+        #else
+            while (true) {
+                run_once(&w);
+            }
+        #endif
     }
 };
 
